@@ -1,0 +1,21 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<ul class="nav bs-sidenav">
+
+	<li class=""><a href="#">Attributes</a>
+		<ul class="nav">
+			<li class=""><a href="${baseurl}attrs/create">create</a></li>
+			<li class=""><a href="${baseurl}attrs/list">attributes</a></li>
+		</ul></li>
+	<li><a href="">Segment</a>
+		<ul class="nav">
+			<li><a href="${baseurl}segments/create">create</a></li>
+			<li><a href="${baseurl}segments/list">list</a></li>
+		</ul></li>
+	<li><a href="">Distribution</a>
+		<ul class="nav">
+			<li><a href="${baseurl}distributions/create">create</a></li>
+			<li><a href="${baseurl}distributions/list">list</a></li>
+		</ul></li>
+</ul>

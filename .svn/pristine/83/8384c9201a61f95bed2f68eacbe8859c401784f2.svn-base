@@ -1,0 +1,30 @@
+<script type="text/javascript">
+var _ta = _ta ||{};
+_ta["vid"]="1";
+if(typeof dataLayer != "undefined")
+{    
+    for (key in dataLayer) {
+       pushinta(key,dataLayer[key] );
+    }
+}
+function pushinta(key,value)
+{    
+    if(typeof value =="object")
+        {
+            for(key2 in value)
+                {
+                    pushinta(key2,value[key2]);
+                }
+        }
+        else
+        {
+            _ta[key]=value ;
+        }
+}
+console.log(_ta);
+(function() {
+var sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
+sp.src = ('https:' == document.location.protocol ? 'https' : 'http')+ '://dataom.com/ta.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sp, s);
+})();
+ </script>

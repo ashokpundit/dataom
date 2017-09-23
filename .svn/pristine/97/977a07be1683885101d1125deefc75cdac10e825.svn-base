@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_com_dataom_app_domain_Attr" modelAttribute="attr" path="/attrs" versionField="none" z="9CLG/kQ08FsrM/dJ/FEq/opeNTA=">
+        <field:input field="name" id="c_com_dataom_app_domain_Attr_name" z="O6UQNYyJxCTcylPeeyEBL1NuOH8="/>
+        <field:input field="description" id="c_com_dataom_app_domain_Attr_description" z="BdrUpcRgR9H3Rb+P5GwF2cAQKLk="/>
+        <field:input field="dn" id="c_com_dataom_app_domain_Attr_dn" z="6HybZefPzK6agWUZ+MzN7MYVE/Y="/>
+        <field:input field="expr" id="c_com_dataom_app_domain_Attr_expr" z="2y6H4EMrsXg/ezgkLFE+rT2YKSw="/>
+        <field:checkbox field="disabled" id="c_com_dataom_app_domain_Attr_disabled" z="njI+bXcsBjHl6IWbuw0IWksOM5M="/>
+        <field:input field="params" id="c_com_dataom_app_domain_Attr_params" z="zhZc0uW07gfPotoK4tXSXf3/Ipo="/>
+        <field:input disabled="true" field="population60d" id="c_com_dataom_app_domain_Attr_population60d" validationMessageCode="field_invalid_integer" z="user-managed"/>
+        <field:input disabled="true" field="population30d" id="c_com_dataom_app_domain_Attr_population30d" validationMessageCode="field_invalid_integer" z="user-managed"/>
+        <field:input disabled="true" field="populationDaily" id="c_com_dataom_app_domain_Attr_populationDaily" validationMessageCode="field_invalid_integer" z="user-managed"/>
+    </form:update>
+</div>

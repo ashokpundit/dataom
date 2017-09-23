@@ -1,0 +1,11 @@
+<div id="header" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+  <jsp:directive.page contentType="text/html;charset=UTF-8" />
+  <jsp:output omit-xml-declaration="yes" />
+
+  <spring:url var="banner" value="/resources/images/banner-graphic.png" />
+  <spring:url var="home" value="/" />
+  <spring:message code="button_home" var="home_label" htmlEscape="false" />
+  <a href="${home}" name="${fn:escapeXml(home_label)}" title="${fn:escapeXml(home_label)}">
+    <table style="margin:auto; z-index:100000; width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td style="width:50%; height:6px; background:#28c0d5;" height="6"></td><td style="width:50%; height:40px; background:#95c43d;" height="40"></td></tr></tbody></table>
+  </a>
+</div> 

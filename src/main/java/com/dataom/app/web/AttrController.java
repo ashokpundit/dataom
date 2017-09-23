@@ -1,0 +1,150 @@
+package com.dataom.app.web;
+
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.dataom.app.domain.Attr;
+import com.dataom.app.dao.AttrDao;
+import com.dataom.app.domain.Attr;
+import com.dataom.app.svc.Utils;
+import com.dataom.app.web.AttrController;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriUtils;
+import org.springframework.web.util.WebUtils;
+
+@RequestMapping("/attrs")
+@Controller
+public class AttrController {
+    ScriptEngineManager factory = new ScriptEngineManager();
+
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+
+    @Autowired
+    AttrDao attrDao;
+
+    @RequestMapping(value = "create", produces = "text/html")
+    public String createForm(Model uiModel) {
+	populateEditForm(uiModel, new Attr());
+	return "attrs/create";
+    }
+
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String show(@PathVariable("id") BigInteger id, Model uiModel) {
+	uiModel.addAttribute("attr", attrDao.findOne(id));
+	uiModel.addAttribute("itemId", id);
+	return "attrs/show";
+    }
+
+    @RequestMapping(value="list",produces = "text/html")
+    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+	if (page != null || size != null) {
+	    int sizeNo = size == null ? 10 : size.intValue();
+	    final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+	    uiModel.addAttribute("attrs", attrDao.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo)).getContent());
+	    float nrOfPages = (float) attrDao.count() / sizeNo;
+	    uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+	} else {
+	    uiModel.addAttribute("attrs", attrDao.findAll());
+	}
+	return "attrs/list";
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST, produces = "text/html")
+    public String update(@Valid Attr attr, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	validate(attr, bindingResult);
+	if (bindingResult.hasErrors()) {
+	    populateEditForm(uiModel, attr);
+	    uiModel.addAttribute("error", Utils.getErrorMessage(bindingResult));
+	    return "attrs/update";
+	}
+	uiModel.asMap().clear();
+	attrDao.save(attr);
+	uiModel.addAttribute("success","updated successfuly");
+	return "forward:/attrs/list";
+    }
+
+    @RequestMapping(value = "/update/{id}",  produces = "text/html")
+    public String updateForm(@PathVariable("id") BigInteger id, Model uiModel) {
+	populateEditForm(uiModel, attrDao.findOne(id));
+	return "attrs/create";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = "text/html")
+    public String delete(@PathVariable("id") BigInteger id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+	Attr attr = attrDao.findOne(id);
+	attrDao.delete(attr);
+	uiModel.asMap().clear();
+	uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+	uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+	uiModel.addAttribute("success","deleted successfuly");
+	return "forward:/attrs/list";
+    }
+
+    void populateEditForm(Model uiModel, Attr attr) {
+	uiModel.addAttribute("attr", attr);
+    }
+
+    String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
+	String enc = httpServletRequest.getCharacterEncoding();
+	if (enc == null) {
+	    enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
+	}
+	try {
+	    pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
+	} catch (UnsupportedEncodingException uee) {
+	}
+	return pathSegment;
+    }
+
+    @RequestMapping(value = "create", method = RequestMethod.POST, produces = "text/html")
+    public String create(@Valid Attr attr, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	validate(attr, bindingResult);
+	if (bindingResult.hasErrors()) {
+	    populateEditForm(uiModel, attr);
+	    uiModel.addAttribute("error", Utils.getErrorMessage(bindingResult));
+	    return "attrs/create";
+	}
+	uiModel.asMap().clear();
+	attrDao.save(attr);
+	uiModel.addAttribute("success","saved successfuly");
+	return "redirect:/attrs/list";
+    }
+
+    private void validate(Attr attr, BindingResult bindingResult) {
+	ScriptContext ctx = new SimpleScriptContext();
+	Bindings bindings = ctx.getBindings(ScriptContext.ENGINE_SCOPE);
+	String[] params = (attr.getParams() == null) ? new String[0] : attr.getParams().split(",");
+	for (String p : params) {
+	    bindings.put(p, "X");
+	}
+	try {
+	    engine.eval(attr.getExpr(), bindings);
+	} catch (ScriptException e) {
+	    e.printStackTrace();
+	    bindingResult.rejectValue("expr", "", "Invalid expression");
+	}
+    }
+}

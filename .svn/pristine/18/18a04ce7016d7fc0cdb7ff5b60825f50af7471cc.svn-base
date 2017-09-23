@@ -1,0 +1,77 @@
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-09 19:17:41
+hint
+project --topLevelPackage com.dataom.app
+mongo setup 
+web mvc setup
+security setup
+logging setup --level INFO
+entity mongo --class ~.domain.Attr
+field string --fieldName name
+field string --fieldName description
+// [failed] field string --fieldName domain
+field string --fieldName dn
+field string --fieldName expr
+field boolean --fieldName disabled
+!
+exit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-09 19:38:50
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-09 19:39:02
+download status
+download accept terms of use
+entity mongo --class ~.domain.Distribution
+field string --fieldName name
+field number --type int --fieldName dtype
+field string --fieldName description
+field string --fieldName syncCall
+field string --fieldName ftpAddress
+field string --fieldName ftpDir
+field string --fieldName ftpUser
+field string --fieldName ftpPass
+field string --fieldName ftpIsSecure
+field boolean --fieldName disabled
+field other --type java.util.Map --fieldName idMap
+exit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-09 21:39:28
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-09 21:39:39
+entity mongo --class ~.domain.Segment
+field string --fieldName name
+field string --fieldName description
+field boolean --fieldName disabled
+exit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-09 21:55:17
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-09 22:20:31
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Segment --class ~.web.SegmentController
+web mvc scaffold --backingType ~.domain.Distribution --class ~.web.DistributionController
+quit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-09 22:55:44
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-09 23:07:20
+repository mongo --interface ~.dao.AttrDao --entity ~.domain.Attr
+repository mongo --interface ~.dao.SegmentDao --entity ~.domain.Segment
+repository mongo --interface ~.dao.DistributionDao --entity ~.domain.Distribution
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Distribution --class ~.web.DistributionController
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Distribution --class ~.web.DistributionController
+web mvc scaffold --backingType ~.domain.Segment --class ~.web.SegmentController
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Distribution --class ~.web.DistributionController
+web mvc scaffold --backingType ~.domain.Segment --class ~.web.SegmentController
+quit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-10 00:31:26
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-10 00:31:36
+exit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-10 00:42:51
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-10 00:43:02
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+// [failed] web mvc scaffold --backingType ~.domain.Segment --class ~.web.SegmentController
+// [failed] web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+// [failed] web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Attr --class ~.web.AttrController
+web mvc scaffold --backingType ~.domain.Segment --class ~.web.SegmentController
+web mvc scaffold --backingType ~.domain.Distribution --class ~.web.DistributionController
+quit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-10 02:52:45
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2013-11-10 11:16:23
+quit
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2013-11-11 00:42:20

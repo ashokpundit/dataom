@@ -1,0 +1,19 @@
+<aspectj>
+<aspects>
+<aspect name="com.dataom.app.domain.Distribution_Roo_ToString"/>
+<aspect name="com.dataom.app.domain.Attr_Roo_Mongo_Entity"/>
+<aspect name="com.dataom.app.dao.SegmentDao_Roo_Mongo_Repository"/>
+<aspect name="com.dataom.app.domain.Segment_Roo_Mongo_Entity"/>
+<aspect name="com.dataom.app.web.ApplicationConversionServiceFactoryBean_Roo_ConversionService"/>
+<aspect name="com.dataom.app.dao.DistributionDao_Roo_Mongo_Repository"/>
+<aspect name="com.dataom.app.domain.Attr_Roo_ToString"/>
+<aspect name="com.dataom.app.domain.SegmentCondition_Roo_JavaBean"/>
+<aspect name="com.dataom.app.domain.Segment_Roo_ToString"/>
+<aspect name="com.dataom.app.domain.Attr_Roo_JavaBean"/>
+<aspect name="com.dataom.app.domain.Distribution_Roo_JavaBean"/>
+<aspect name="com.dataom.app.dao.AttrDao_Roo_Mongo_Repository"/>
+<aspect name="com.dataom.app.domain.Segment_Roo_JavaBean"/>
+<aspect name="com.dataom.app.domain.Distribution_Roo_Mongo_Entity"/>
+</aspects>
+</aspectj>
+

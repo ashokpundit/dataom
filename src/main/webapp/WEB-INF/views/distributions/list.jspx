@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_dataom_app_domain_Distribution" items="${distributions}" z="cGo4O09mR8wZDzDTQFbi5DuS4lM=">
+        <table:table data="${distributions}" id="l_com_dataom_app_domain_Distribution" path="/distributions" z="xx1c4kOW92pixxKbbj5S3tRsZ+k=">
+            <table:column id="c_com_dataom_app_domain_Distribution_name" property="name" z="ie4eoNHSopiVErSLV/OnfKb/9dE="/>
+            <table:column id="c_com_dataom_app_domain_Distribution_dtype" property="dtype" z="ZWGdKaQ7NawI5FxwK0FW28+XjuY="/>
+            <table:column id="c_com_dataom_app_domain_Distribution_description" property="description" z="VNPiS3fOtDKANV4vn7HdSmFz5iE="/>
+            <table:column id="c_com_dataom_app_domain_Distribution_syncCall" property="syncCall" z="HcwaPQmQsY+/nUkqXPgaqK9Hzpg="/>
+            <table:column id="c_com_dataom_app_domain_Distribution_ftpAddress" property="ftpAddress" z="zOZoS0h6IUmx2aiORVkOo9lmVk0="/>
+            <table:column id="c_com_dataom_app_domain_Distribution_ftpDir" property="ftpDir" z="pMC6tJm9KBEqKqaZLh3osaW7nLQ="/>
+        </table:table>
+    </page:list>
+</div>

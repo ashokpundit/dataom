@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_dataom_app_domain_Attr" items="${attrs}" z="M1cVy/H+OTXsCYX/dAaHnX79rSY=">
+        <table:table data="${attrs}" id="l_com_dataom_app_domain_Attr" path="/attrs" z="80JePQtebagp4+EtmNUsRhlAeOo=">
+            <table:column id="c_com_dataom_app_domain_Attr_name" property="name" z="/GcxqEN2E1AVpRmyCYgEPU63gXA="/>
+            <table:column id="c_com_dataom_app_domain_Attr_description" property="description" z="caoErDT1cRRXIc3GKF/eouJH0Nk="/>
+            <table:column id="c_com_dataom_app_domain_Attr_dn" property="dn" z="A7jbw3clXll4rq98MH114tZvQQc="/>
+            <table:column id="c_com_dataom_app_domain_Attr_expr" property="expr" z="XQZRnKEjOwf++Dg1FaOxQIpksSY="/>
+            <table:column id="c_com_dataom_app_domain_Attr_disabled" property="disabled" z="VUwoN+2Ij3Fl3qOI7gFCOwEXI5U="/>
+            <table:column id="c_com_dataom_app_domain_Attr_params" property="params" z="YzQYz1uow/eRgPtGErDEgpBp2rs="/>
+        </table:table>
+    </page:list>
+</div>

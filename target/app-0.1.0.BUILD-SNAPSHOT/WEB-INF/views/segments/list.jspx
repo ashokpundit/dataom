@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_dataom_app_domain_Segment" items="${segments}" z="zt/cEKuU2Vw05fr5CeE9c69RWeE=">
+        <table:table data="${segments}" id="l_com_dataom_app_domain_Segment" path="/segments" z="jVXsSo4r3bwkNvDTI1tOxltgP+Q=">
+            <table:column id="c_com_dataom_app_domain_Segment_name" property="name" z="kXpJhKbEriNLU6+dWsnWBlQF7u8="/>
+            <table:column id="c_com_dataom_app_domain_Segment_description" property="description" z="N5kCLzLWqNRSp6B9jiqjTul751A="/>
+            <table:column id="c_com_dataom_app_domain_Segment_disabled" property="disabled" z="prRxAYFbPHiPH5XHSHWlztG4MEk="/>
+            <table:column id="c_com_dataom_app_domain_Segment_historicNature" property="historicNature" z="2Rxt+8sotiZfMh8Cj/MA3FWuxF4="/>
+            <table:column id="c_com_dataom_app_domain_Segment_recencyDays" property="recencyDays" z="y1f4mBCA+mDTQY2+QBbtItujCFs="/>
+            <table:column id="c_com_dataom_app_domain_Segment_conditions" property="conditions" z="vGCgYsHKEIqCh+HqNYQgpPNtp6Y="/>
+        </table:table>
+    </page:list>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_dataom_app_domain_Segment" object="${segment}" path="/segments" z="P6MiIzXMfD/VyZ9I5S0MtRdxwzA=">
+        <field:display field="name" id="s_com_dataom_app_domain_Segment_name" object="${segment}" z="2n1uw4zYDcGxaCHA/S70oCt/9Ds="/>
+        <field:display field="description" id="s_com_dataom_app_domain_Segment_description" object="${segment}" z="FvL8zg0GfpYWBclKn0PbjLX1gMM="/>
+        <field:display field="disabled" id="s_com_dataom_app_domain_Segment_disabled" object="${segment}" z="JpvsIlVWaI4yuqD9dsU8VjyMr84="/>
+        <field:display field="historicNature" id="s_com_dataom_app_domain_Segment_historicNature" object="${segment}" z="aN6lZHVHLzFQBmPr5m0VL1hVPgI="/>
+        <field:display field="population60d" id="s_com_dataom_app_domain_Segment_population60d" object="${segment}" z="Ig0ZnuQNGOLNVTMXrxo3Qu6W2cg="/>
+        <field:display field="population30d" id="s_com_dataom_app_domain_Segment_population30d" object="${segment}" z="YiAdUEMB9qx6Y0m24lLPgh898PA="/>
+        <field:display field="recencyDays" id="s_com_dataom_app_domain_Segment_recencyDays" object="${segment}" z="W3CuzgiG+4Domb4N3hpICj82Q+c="/>
+        <field:display field="conditions" id="s_com_dataom_app_domain_Segment_conditions" object="${segment}" z="fxVinnINjmAXK9W0cPuQz7RyRII="/>
+        <field:display field="distribution" id="s_com_dataom_app_domain_Segment_distribution" object="${segment}" z="9eCcvgV2s5VURKntb1qwK61PDpA="/>
+        <field:display field="populationDaily" id="s_com_dataom_app_domain_Segment_populationDaily" object="${segment}" z="P6ebTzf0GW8wcI4FOaI8o3EdEUI="/>
+    </page:show>
+</div>

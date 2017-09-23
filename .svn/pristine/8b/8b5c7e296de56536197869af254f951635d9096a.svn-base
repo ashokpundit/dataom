@@ -1,0 +1,22 @@
+function() {
+	var key = {vid : this.vid,event : this.event};
+	var props=["pageurl","utm_source","utm_content","utm_campaign","dn","t_medid","cty","rgn","cnt"];
+	var value = {total:1};
+	for(var i in props){
+	    if (typeof this[props[i]] != 'undefined' && this[props[i]] != null){
+		value[props[i]]={}; 
+		value[props[i]][this[props[i]]]=1;
+	    }
+	}	
+	if (typeof this.userpaidamt != 'undefined' && this.userpaidamt != null) {
+	    value['order']={};
+	    value['order'].userpaidamt = parseFloat(this.userpaidamt);
+	    value['order'].totalpaid = parseFloat(this.userpaidamt);
+	}
+	if(typeof this.category != 'undefined' && typeof this.category != null){
+	    value['category']={};
+	    value['category'][this['category']]={};
+	    value['category'][this['category']][this.event]=1;
+	}
+	emit(key, value);
+}

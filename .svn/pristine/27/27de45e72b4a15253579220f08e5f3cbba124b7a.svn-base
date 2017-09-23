@@ -1,0 +1,9 @@
+package com.dataom.app.svc;
+
+public interface MapReduceJobs {
+	public void dailyTotals();
+	
+	public void dailyAttributes();
+	
+	public void dailySizes();
+}

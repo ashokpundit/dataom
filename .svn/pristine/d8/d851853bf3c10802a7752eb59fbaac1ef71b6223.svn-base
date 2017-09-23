@@ -1,0 +1,10 @@
+package com.dataom.app.svc;
+
+import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
+
+public interface PixelDataProcessorSvc {
+	void initIt();
+	ThreadPoolExecutor getExecutor();
+	void processData(String ip, String u, Map<String, Object> parameterMap, String country, String region);
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_com_dataom_app_domain_Segment" modelAttribute="segment" path="/segments" versionField="none" z="X9oW5/xZtITT70USnlkj4nD3psg=">
+        <field:input field="name" id="c_com_dataom_app_domain_Segment_name" z="UGrzAE3UgojX4sE9MA/3Zn/u+Pg="/>
+        <field:input field="description" id="c_com_dataom_app_domain_Segment_description" z="HOVrpCii6XdGZWnlP1iCu/nuoU0="/>
+        <field:checkbox field="disabled" id="c_com_dataom_app_domain_Segment_disabled" z="Q+QKqsUp+C7GJDNFLGpvoYwGPI8="/>
+        <field:checkbox field="historicNature" id="c_com_dataom_app_domain_Segment_historicNature" z="yHnN2nzl2IpqExPF3kfqudZV2gk="/>
+        <field:input field="population60d" id="c_com_dataom_app_domain_Segment_population60d" validationMessageCode="field_invalid_integer" z="kqvfEk0Z8jY3/al0RzsuDzBTbhI="/>
+        <field:input field="population30d" id="c_com_dataom_app_domain_Segment_population30d" validationMessageCode="field_invalid_integer" z="c+CBvYfnkGAfgkvlrRyoefzjsss="/>
+        <field:input field="recencyDays" id="c_com_dataom_app_domain_Segment_recencyDays" validationMessageCode="field_invalid_integer" z="8D8mb48NtEgFmkmnJj7Oeo3wC1c="/>
+        <field:input field="conditions" id="c_com_dataom_app_domain_Segment_conditions" z="MVo/ZBBQOwTFC3krw71ssrVkfCg="/>
+        <field:input field="distribution" id="c_com_dataom_app_domain_Segment_distribution" z="/3ER4aqDDTIvJNbPFDORXF+NAzU="/>
+        <field:input field="populationDaily" id="c_com_dataom_app_domain_Segment_populationDaily" validationMessageCode="field_invalid_integer" z="jVxFrPLw+FV8xcTW+d3NVH0xK1o="/>
+    </form:update>
+</div>

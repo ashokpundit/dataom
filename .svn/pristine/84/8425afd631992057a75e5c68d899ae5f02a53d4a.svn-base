@@ -1,0 +1,301 @@
+(function ta() {
+    if (typeof _ta == 'undefined')
+    	eval('var _ta;');
+    if (typeof _ta == 'undefined' || this._ta == null)
+    	_ta = {};
+    
+    _ta["trkhost"] = "http://t.dataom.com/ta.gif";
+	if (typeof _ta["events"] == 'undefined' || _ta["events"].length == 0)
+		_ta["events"] = [ 1 ];
+    
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent",eventListener = window[eventMethod],messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+    function calculateHash(val) {
+    	var hash = 0, len = val.length,ch,i;
+    	if (len === 0)
+    		return hash;
+    	for ( i = 0; i < len; ++i) {
+    		ch = val.charCodeAt(i);
+    		hash = ((hash << 5) - hash) + ch;
+    		hash = hash & hash;
+    	}
+    	return hash;
+    }
+
+    function readCookie(name) {
+    	var cookiestr = document.cookie,cookieArr = cookiestr.split(';'),idx,ckname,tmpck,i;
+    	for ( i = 0; i < cookieArr.length; i++) {
+    		idx = cookieArr[i].indexOf("=");
+    		ckname = cookieArr[i].substring(0, idx).trim();
+    		if (ckname == name) {
+    		    tmpck = {};
+    		    tmpck[ckname] = cookieArr[i].substring(idx + 1);
+    		    return tmpck;
+    		}
+    	}
+    	return null;
+    }
+
+    function getCookieDomain() {
+    	var dn = window.document.domain,dotpos;
+    	if (dn.indexOf("indiasellonline.in") >= 0  || dn.indexOf("mysmartstore.in") >= 0 
+    			|| dn.indexOf("mywebstore.in") >= 0 )
+    		return dn;
+
+    	dotpos = dn.lastIndexOf('.');
+    	if (dotpos > 0) {
+    		dotpos = dn.lastIndexOf('.', dotpos - 1);
+    		if (dotpos > 0)
+    			return dn.substring(dotpos + 1);
+    	}
+
+    	return dn;
+    }
+
+    function setCookie(name, value, path, expires) {
+    	var domain = getCookieDomain();
+    	if (isEmpty(path))
+    		path = "/";
+    	if (expires == null) {
+    		document.cookie = name + "=" + value + ";domain=" + domain + ";path="
+    				+ path;
+    	} else {
+    		document.cookie = name + "=" + value + ";expires=" + expires.toUTCString()
+    				+ ";domain=" + domain + ";path=" + path;
+    	}
+    }
+
+    function isEmpty(field) {
+    	if (typeof field == 'undefined' || field == null) {
+    		return true;
+    	}
+    	if (typeof field === 'string') {
+    		return field.trim() == "";
+    	}
+    	return false;
+    }
+
+    function generateUID() {
+    	var uid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(
+    			c) {
+    		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    		return v.toString(16);
+    	});
+    	return uid.replace(/-/g, '');
+    }
+    // ******************
+
+
+	var parammapping = {
+		vid : 'vid',
+		sid : 'sid',
+		event : 'events',
+		title : 'title',
+		t_medid : 't_medid',
+		t_campid : "t_campid",
+		utm_source : 'utm_source',
+		utm_medium : 'utm_medium',
+		utm_campaign : 'utm_campaign',
+		utm_term : 'utm_term',
+		utm_content : 'utm_content',
+		email:'email',
+		mobile:'mobile',
+		company:'company',
+		city:'city',
+		age:'age',
+		company:'company',
+		name:'name',
+		tags:'tags'
+	},gamap = {
+		utmcsr : 'utm_source',
+		utmcmd : 'utm_medium',
+		utmccn : 'utm_campaign',
+		utmctr : 'utm_term',
+		utm_content : 'utm_content'
+	};
+	
+	(function loadGoogleJSApi(){
+	    var ga =document.createElement('script'); ga.type = 'text/javascript'; ga.async=true,s =document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'google.com/jsapi';
+	})();
+	
+	function checkNupdateParams() {
+		
+		checkck4params();
+	}
+	
+	function checkck4params() {
+		var ckp = [ 'vid', 'sid', 't_medid' ],dt = new Date(),y2 = new Date(dt.setFullYear(dt.getFullYear() + 2)),i;
+		for ( i = 0; i < ckp.length; i++) {
+			chk4updateCookie(ckp[i], y2);
+		}
+	}
+	
+	
+	function addGeoInfo(){
+		if(typeof google !='undefined' && google != null && typeof google.loader !='undefined' && google.loader != null && typeof google.loader.ClientLocation!='undefined' && google.loader.ClientLocation != null && 
+			typeof google.loader.ClientLocation.address !='undefined' && google.loader.ClientLocation.address != null) {
+		    _ta['cnt']=google.loader.ClientLocation.address.country;
+		    _ta['cty']=google.loader.ClientLocation.address.city;
+		    _ta['rgn']=google.loader.ClientLocation.address.region;
+		}
+	}
+	
+	function ckeckNsetUid() {
+		var dt = new Date(),y2 = new Date(dt.setFullYear(dt.getFullYear() + 2)),ck = readCookie("uid"),vck,uid;
+
+		if (typeof ck != 'undefined' && ck != null && ck != {}) {
+			vck = readCookie("visit");
+			if (typeof vck != 'undefined' && vck != null && vck != {}) {
+				_ta["visit"] = vck.visit;
+			} else {
+				setCookie("visit", "O", null, null);
+				_ta["visit"] = "O";
+			}
+			_ta["uid"] = ck.uid;
+		} else {
+			uid = generateUID();
+			setCookie("uid", uid, null, y2);
+			_ta["uid"] = uid;
+			setCookie("visit", "N", null, null);
+			_ta["visit"] = "N";
+		}
+	}
+	function checkNsetSessionId() {
+		var sessionid = readCookie('t_sessionid'),sidarr = null;
+		if (typeof sessionid != 'undefined' && sessionid != null && sessionid != {}) {
+			sessionid = sessionid['t_sessionid'];
+			generateSessionId(false, sessionid);
+
+		} else {
+			_ta['events'].push(9);
+			generateSessionId(true, sidarr);
+		}
+
+	}
+	function generateSessionId(fv, sid) {
+		var time = new Date().getTime(), cktime = time + (1000 * 60 * 30), expdate = new Date(
+				cktime);
+		if (fv) {
+			sid = time;
+		}
+		_ta['t_sessionid'] = sid;
+		setCookie('t_sessionid', sid, null, expdate);
+	}
+
+	function setRefferer() {
+		var referrer = null,refck = readCookie("refck"),idx;
+		if (typeof refck == 'undefined' || refck == null || refck == {}) {
+			if (document.referrer) {
+				referrer = document.referrer;
+				idx = referrer.indexOf("?");
+				referrer = idx == -1 ? referrer : referrer.substring(idx);
+			}
+			setCookie("refck", referrer, null, null);
+			_ta['referrer'] = referrer;
+		} else {
+			_ta['referrer'] = refck.refck;
+		}
+
+	}
+	function setLocation() {
+		_ta['pageurl'] = window.location.pathname;
+	}
+	function setDomain() {
+		_ta["dn"] = document.domain;
+		_ta["ckdn"]=getCookieDomain();
+	}
+	function setTitle() {
+		if (isEmpty(_ta["title"]))
+			_ta["title"] = document.title;
+	}
+	function setLandingPage() {
+		var lp = readCookie("lp");
+		if (typeof lp == 'undefined' || lp == null || lp == {}) {
+			_ta["lp"] = window.location.pathname;
+			setCookie("lp", _ta["lp"], null, null);
+		} else {
+			_ta["lp"] = lp.lp;
+		}
+	}
+	function chk4updateCookie(ckn, y2) {
+		var ck = readCookie(ckn);
+		if (typeof ck == 'undefined' || ck == null || ck == {}) {
+			if (typeof _ta[ckn] != 'undefined' && _ta[ckn] != null && _ta[ckn].trim()!='') {
+			    _ta['subs']='N';
+			    setCookie(ckn, _ta[ckn], null, y2);
+			}
+		} else {
+			if (typeof _ta[ckn] != 'undefined' && _ta[ckn] != null && _ta[ckn].trim()!='') {
+				if (ck[ckn] != _ta[ckn]){
+				    if(ckn=='sid'){
+			    	    	uid=generateUID();
+			    	    	setCookie("uid",uid,null,y2);
+			    	    }
+				    setCookie(ckn, _ta[ckn], null, y2);
+				}	
+			} else {
+				_ta[ckn] = ck[ckn];
+			}
+		}
+	}
+
+	function doPixelRequest() {
+	  	if (_ta['dn'].indexOf('localhost') >= 0
+				|| _ta['dn'].indexOf('127.') == 0
+				|| _ta['dn'].indexOf('172.') == 0
+				|| _ta['dn'].indexOf('10.') == 0
+				|| _ta['dn'].indexOf('192.') == 0) {
+			//return;
+		}
+
+		var rnd = (new Date()).getTime(),params = "",src,bdy,img,i;
+		for (key in _ta) {
+		if (typeof _ta[key] != 'undefined' && _ta[key] != null && _ta[key] != ""
+					&& key != "events" && key != "trkhost" && key != "signup")
+				params += key + "=" + escape(_ta[key]) + "&";
+		}
+		for ( i = 0; i < _ta["events"].length; i++) {
+			src = _ta['trkhost'] + "?" + params + "event="
+					+ _ta["events"][i] + "&rnd=" + rnd;
+			img = document.createElement('img');
+			img.src = src;
+			img.width = '1';
+			img.height = '1';
+			bdy = document.getElementsByTagName('body')[0];
+			bdy.appendChild(img);
+		}
+	}
+	function readGACookies() {
+		var gack = readCookie("__utmz"),temp;
+
+		if (typeof gack != 'undefined' && gack != null && gack != {}) {
+			gack = gack.__utmz;
+			if (typeof gack != 'undefined' && gack != null && gack != {}) {
+				utmzparams = gack.split('.').slice(4).join('.').split('|');
+				for ( var i = 0; i < utmzparams.length; i++) {
+					temp = utmzparams[i].split('=');
+					if (temp[1].charAt(0) == '(')
+						temp[1] = temp[1].substring(1, temp[1].length - 1);
+					if (!isEmpty(temp[1]) && temp[1] != 'none')
+						_ta[gamap[temp[0].trim()]] = temp[1].trim();
+				}
+			}
+		}
+	}
+	
+	checkNupdateParams();
+	setDomain();ckeckNsetUid();checkNsetSessionId();
+	
+	
+	if (typeof _ta["vid"] != 'undefined' && _ta["vid"] != null)
+        {
+	    setRefferer();
+	    setLocation();
+	    setTitle();
+	    setLandingPage();
+	    addGeoInfo();
+	    doPixelRequest();
+	}
+
+})();

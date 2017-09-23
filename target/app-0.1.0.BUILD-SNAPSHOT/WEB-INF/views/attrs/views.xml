@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="custom" name="attrs/list">
+        <put-attribute name="body" value="/WEB-INF/views/attrs/listattribute.jsp"/>
+    </definition>
+<definition extends="custom" name="attrs/show">
+        <put-attribute name="body" value="/WEB-INF/views/attrs/showattribute.jsp"/>
+    </definition>
+<definition extends="custom" name="attrs/create">
+        <put-attribute name="body" value="/WEB-INF/views/attrs/createattribute.jsp"/>
+    </definition>
+<definition extends="custom" name="attrs/update">
+        <put-attribute name="body" value="/WEB-INF/views/attrs/updateattribute.jsp"/>
+    </definition>
+</tiles-definitions>

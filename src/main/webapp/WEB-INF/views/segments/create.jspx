@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_com_dataom_app_domain_Segment" modelAttribute="segment" path="/segments" render="${empty dependencies}" z="+9kEf4pOQ9F9jPC7ZcYPn9ghLhw=">
+        <field:input field="name" id="c_com_dataom_app_domain_Segment_name" z="UGrzAE3UgojX4sE9MA/3Zn/u+Pg="/>
+        <field:input field="description" id="c_com_dataom_app_domain_Segment_description" z="HOVrpCii6XdGZWnlP1iCu/nuoU0="/>
+        <field:checkbox field="disabled" id="c_com_dataom_app_domain_Segment_disabled" z="Q+QKqsUp+C7GJDNFLGpvoYwGPI8="/>
+        <field:checkbox field="historicNature" id="c_com_dataom_app_domain_Segment_historicNature" z="yHnN2nzl2IpqExPF3kfqudZV2gk="/>
+        <field:input field="recencyDays" id="c_com_dataom_app_domain_Segment_recencyDays" validationMessageCode="field_invalid_integer" z="8D8mb48NtEgFmkmnJj7Oeo3wC1c="/>
+        <field:input field="conditions" id="c_com_dataom_app_domain_Segment_conditions" z="MVo/ZBBQOwTFC3krw71ssrVkfCg="/>
+        <table>
+        	<tr><td>Attribute</td><td>Min Frequency</td><td></td></tr>
+        	
+        </table>
+        <field:input field="distribution" id="c_com_dataom_app_domain_Segment_distribution" z="/3ER4aqDDTIvJNbPFDORXF+NAzU="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_com_dataom_app_domain_Segment" render="${not empty dependencies}" z="H1FXUktIW28rhVavts3dzJK0X+0="/>
+    <script><![CDATA[
+function changeRecency() {
+	if(dojo.byId("_historicNature_id").checked == false)
+		 dojo.byId("_recencyDays_id").disabled=true;
+	else 
+		dojo.byId("_recencyDays_id").disabled=false;
+}
+
+dojo.ready(function(){
+    changeRecency();
+    dojo.connect(dojo.byId("_historicNature_id"), "onclick", function(evt){
+    	changeRecency();
+	});
+	
+	
+	
+});
+
+]]></script>
+</div>

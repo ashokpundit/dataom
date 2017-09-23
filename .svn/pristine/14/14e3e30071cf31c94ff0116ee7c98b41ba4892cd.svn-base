@@ -1,0 +1,103 @@
+(function ta() {
+    if (typeof _ta == 'undefined')
+    	eval('var _ta;');
+    if (typeof _ta == 'undefined' || this._ta == null)
+    	_ta = {};
+    
+    _ta["trkhost"] = "http://t.dataom.com/ta.gif";
+	if (typeof _ta["events"] == 'undefined' || _ta["events"].length == 0)
+		_ta["events"] = [ 1 ];
+    
+    _ta["vid"]="1";
+if(typeof dataLayer != "undefined")
+{    
+    for (key in dataLayer) {
+       pushinta(key,dataLayer[key] );
+    }
+}
+function pushinta(key,value)
+{    
+    if(typeof value =="object")
+        {
+            for(key2 in value)
+                {
+                    pushinta(key2,value[key2]);
+                }
+        }
+        else
+        {
+            _ta[key]=value ;
+        }
+}
+    
+    
+
+    function calculateHash(val) {
+    	var hash = 0, len = val.length,ch,i;
+    	if (len === 0)
+    		return hash;
+    	for ( i = 0; i < len; ++i) {
+    		ch = val.charCodeAt(i);
+    		hash = ((hash << 5) - hash) + ch;
+    		hash = hash & hash;
+    	}
+    	return hash;
+    }
+
+    
+    
+    function isEmpty(field) {
+    	if (typeof field == 'undefined' || field == null) {
+    		return true;
+    	}
+    	if (typeof field === 'string') {
+    		return field.trim() == "";
+    	}
+    	return false;
+    }
+
+    	
+	
+	function setLocation() {
+		_ta['pageurl'] = window.location.pathname;
+	}
+	function setDomain() {
+		_ta["dn"] = document.domain;
+
+	}
+	function setTitle() {
+		if (isEmpty(_ta["title"]))
+			_ta["title"] = document.title;
+	}
+	function doPixelRequest() {
+	  	if (_ta['dn'].indexOf('localhost') >= 0
+				|| _ta['dn'].indexOf('127.') == 0
+				|| _ta['dn'].indexOf('172.') == 0
+				|| _ta['dn'].indexOf('10.') == 0
+				|| _ta['dn'].indexOf('192.') == 0) {
+			//return;
+		}
+
+		var rnd = (new Date()).getTime(),params = "",src,bdy,img,i;
+		for (key in _ta) {
+		if (typeof _ta[key] != 'undefined' && _ta[key] != null && _ta[key] != ""
+					&& key != "events" && key != "trkhost" && key != "signup")
+				params += key + "=" + escape(_ta[key]) + "&";
+		}
+		for ( i = 0; i < _ta["events"].length; i++) {
+			src = _ta['trkhost'] + "?" + params + "event="
+					+ _ta["events"][i] + "&rnd=" + rnd;
+			img = document.createElement('img');
+			img.src = src;
+			img.width = '1';
+			img.height = '1';
+			bdy = document.getElementsByTagName('body')[0];
+			bdy.appendChild(img);
+		}
+	}
+            setDomain();		
+	    setTitle();	
+	    doPixelRequest();
+	
+
+})();

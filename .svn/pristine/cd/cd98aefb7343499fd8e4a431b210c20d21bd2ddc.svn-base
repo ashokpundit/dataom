@@ -1,0 +1,62 @@
+function(key, values) {
+    	var value = {total:0};
+	var minAmt=-1,maxAmt=-1,flag=true;
+	values.forEach(function(v) {
+	for ( var fld in v) {
+	    var temp = v[fld];
+	    for ( var key in temp) {
+		var val = temp[key];
+		if(value[fld] == undefined || value[fld]== null){
+		    value[fld]={};
+		}
+		if(fld=='order'){
+		    if(key=='userpaidamt'){
+			if(flag){
+			    minAmt=val;
+			    maxAmt=val;
+			    flag=false;
+			}else{
+			    minAmt=val<minAmt ?val:minAmt;
+			    maxAmt=val>maxAmt ?val:maxAmt;
+			}
+		    }
+		   if(key=='totalpaid'){
+		    if(typeof value['order'].totalpaid=='undefined'){
+			value['order'].totalpaid= parseFloat(val);
+		    }else{
+			value['order'].totalpaid+=parseFloat(val);
+		    }
+		   }
+		}else if(fld=='category'){
+		    if (typeof value[fld][key] == 'undefined' || value[fld][key] == null) {
+			    value[fld][key] = {};
+			    for(var catev in val){
+				value[fld][key][catev] = val[catev];
+			    }
+			}else{
+			    for(var catev in val){
+				if(typeof value[fld][key][catev]== 'undefined'){
+				    value[fld][key][catev] = val[catev];
+				}else{
+				    value[fld][key][catev] += val[catev];
+				}
+			    }
+			} 
+		}else{
+		    if (value[fld][key] == undefined || value[fld][key] == null) {
+			value[fld][key] = val;
+		    } else {
+			value[fld][key] += val;
+		    }
+		}
+	    }
+			
+	}
+	value.total+=v.total;
+	if(minAmt!=-1)
+	    value['order'].minAmt=minAmt;
+	if(maxAmt!=-1)
+	    value['order'].maxAmt=maxAmt;
+	});
+	return value;
+}

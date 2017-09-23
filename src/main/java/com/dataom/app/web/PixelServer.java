@@ -1,0 +1,117 @@
+package com.dataom.app.web;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.UUID;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.dataom.app.svc.PixelDataProcessorSvc;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+
+
+
+public class PixelServer extends HttpServlet {
+
+	private ServletConfig config;
+	private DatabaseReader locationReader = null;
+	private int counter = 0;
+	public static String mapReducePath;
+	public static String exportpath;
+	
+	public void init(ServletConfig cfg) throws ServletException {
+		super.init(cfg);
+		mapReducePath = cfg.getInitParameter("mapreducepath");
+		exportpath = cfg.getInitParameter("exportpath");
+		
+		if(cfg.getInitParameter("maxmindLocation") != null && !cfg.getInitParameter("maxmindLocation").trim().equals("") ) {
+			try {
+				locationReader = new DatabaseReader(new File(cfg.getInitParameter("maxmindLocation")));
+			} catch (IOException e) {
+				throw new ServletException(e); 
+			}
+		}
+	}	
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String country = null;
+		String region = null;
+
+		try {
+			if(locationReader != null) {
+				CityResponse loc = locationReader.city(InetAddress.getByName(request.getRemoteAddr()));
+				country = loc.getCountry().getIsoCode();
+				region =  loc.getMostSpecificSubdivision().getIsoCode();
+			}
+		} catch (GeoIp2Exception e) {
+			e.printStackTrace();
+		}
+
+		Cookie[] cookies = request.getCookies();
+		Cookie ucookie = null;
+		if(cookies != null) {
+			for(int i = 0; i < cookies.length; ++i) {
+				if(cookies[i].getName().equals("u")){
+					ucookie = cookies[i];
+					break;
+				}
+			}
+		}
+
+		if(ucookie == null) {
+			UUID uid = UUID.randomUUID();
+			ucookie = new Cookie("u", uid.toString().replaceAll("-", ""));
+			ucookie.setPath("/");
+			//ucookie.setDomain(domain);
+			ucookie.setMaxAge(60*60*24*365);
+			response.addCookie(ucookie);
+		}
+		
+		
+		((PixelDataProcessorSvc)WebApplicationContextUtils.getWebApplicationContext(getServletContext()).getBean(PixelDataProcessorSvc.class)).processData(request.getRemoteAddr(), ucookie.getValue(), request.getParameterMap(), country, region);
+
+		RequestDispatcher rd = getServletContext().getNamedDispatcher("default");
+		rd.forward(request, response);
+	}
+	
+	public static void main(String[] args) throws Exception{
+		DatabaseReader locationReader = new DatabaseReader(new File("/home/prashant/workspace2013/pixeler/src/main/resources/GeoLite2-City.mmdb"));
+		System.out.println("********");
+		System.out.println(System.currentTimeMillis());
+		CityResponse response = locationReader.city(InetAddress.getByName("128.101.101.101"));
+		System.out.println(System.currentTimeMillis());
+		response = locationReader.city(InetAddress.getByName("128.101.101.101"));
+		System.out.println(System.currentTimeMillis());
+		response = locationReader.city(InetAddress.getByName("210.212.85.60"));
+		System.out.println(System.currentTimeMillis());
+		System.out.println("********");
+		System.out.println(response.getCountry().getIsoCode()); // 'US'
+		System.out.println(response.getCountry().getName()); // 'United States'
+		System.out.println(response.getCountry().getNames().get("zh-CN")); // '美国'
+
+		System.out.println(response.getMostSpecificSubdivision().getName()); // 'Minnesota'
+		System.out.println(response.getMostSpecificSubdivision().getIsoCode()); // 'MN'
+
+		System.out.println(response.getCity().getName()); // 'Minneapolis'
+
+		System.out.println(response.getPostal().getCode()); // '55455'
+
+		System.out.println(response.getLocation().getLatitude()); // 44.9733
+		System.out.println(response.getLocation().getLongitude()); // -93.2323
+		
+		locationReader.close();
+	}
+
+}

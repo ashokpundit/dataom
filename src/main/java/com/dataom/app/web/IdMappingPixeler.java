@@ -1,0 +1,78 @@
+package com.dataom.app.web;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.UUID;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.dataom.app.domain.Distribution;
+import com.dataom.app.svc.PixelDataProcessorSvc;
+
+@Controller
+@RequestMapping("/map")
+public class IdMappingPixeler {
+	@Autowired
+	private PixelDataProcessorSvc processSvc;
+	
+	@RequestMapping("")
+	public String idMap(@CookieValue(value="u", required=false) String u, @RequestParam("mapped_uid") String duid, @RequestParam("distribution") String distribution, HttpServletResponse response){
+		if(u == null) {
+			UUID uid = UUID.randomUUID();
+			Cookie ucookie = new Cookie("u", uid.toString().replaceAll("-", ""));
+			ucookie.setPath("/");
+			//ucookie.setDomain(domain);
+			ucookie.setMaxAge(60*60*24*365);
+			response.addCookie(ucookie);
+			u = ucookie.getValue();
+		}
+		Cookie distrcookie = new Cookie("d" + distribution, "1");
+		distrcookie.setPath("/");
+		distrcookie.setMaxAge(60*60*24*7);
+		response.addCookie(distrcookie);
+		
+		processSvc.mapDistributionData(distribution, u, duid);
+		
+		return "forward:/m.gif";
+	}
+	
+	@RequestMapping(value="distro", produces="application/javascript" )
+	public ResponseEntity<String> idMapCall(HttpServletResponse response, HttpServletRequest request,@RequestParam("callback") String callback){
+		Cookie[] cookies = request.getCookies();
+		TreeSet<String> set = new TreeSet<String>(); 
+		for(Cookie c : cookies) {
+			set.add(c.getName());
+		}
+
+
+		String dataToSend=callback+"({";
+		String urls="";
+		List<Distribution> distList = processSvc.getDistributions();
+		for(Distribution d : distList) {
+			if(!set.contains("d" + d.getId().toString())) {
+				String url = d.getSyncCall();
+				urls+="\""+d.getId().toString()+"\": \""+url+"\",";
+				//SEND TO JSON
+			}
+		}
+		if(!urls.equals(""))
+			urls=urls.substring(0, urls.length()-1);
+		//dataToSend+=urls+"});";
+		
+		dataToSend += "\"abc\":\"http://t.touchsy.in/ta.gif?vid=24970653818006781538314004888&sid=25266824853399363016971873298&t_medid=25199888702705606531692995195&ev=1\", \"cd\":\"http://t.touchsy.in/ta.gif?vid=24970653818006781538314004888&sid=25266824853399363016971873298&t_medid=25199888702705606531692995195&ev=10\"});";
+		return new ResponseEntity<String>(dataToSend, HttpStatus.OK);
+	}
+	
+}

@@ -1,0 +1,169 @@
+package com.dataom.app.svc;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.PostConstruct;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import com.dataom.app.dao.AttrDao;
+import com.dataom.app.domain.Attr;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+
+@Service("PixelDataProcessor")
+public class PixelDataProcessorImpl implements PixelDataProcessorSvc {
+
+	@Autowired
+	private MongoTemplate mongo;
+	
+	private ThreadPoolExecutor executor;
+	
+	@Autowired
+	private AttrDao attrDao;;
+	
+	private List<Attr> attributes;
+	
+	private ScriptEngineManager factory = new ScriptEngineManager();
+
+    private ScriptEngine engine = factory.getEngineByName("JavaScript");
+
+	private volatile String collectionName;
+    
+	@PostConstruct
+	public void initIt() {
+		System.out.println((new Date()) + " PixelDataProcessorImpl: init() - started");
+		executor = new ThreadPoolExecutor(10, 100, 4, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
+		
+		initVars();
+		
+	}
+	
+	@Scheduled(cron= "0 0 * * * *")
+	public void initVars(){
+		List<Attr> attrs = attrDao.findAll();
+		List<Attr> tempattributes = new ArrayList<Attr>();
+		int i = 0;
+		for(Attr attr : attrs) {
+			if(attr.getDisabled() != null &&  !attr.getDisabled().booleanValue() ) {
+				tempattributes.add(attr);
+				++i;
+			}
+		}
+		attributes = tempattributes;
+		System.out.println((new Date()) +" PixelDataProcessorImpl.initVars: active attr " + i);
+		
+		Calendar cl = Calendar.getInstance();
+		collectionName =  "raw" + cl.get(Calendar.YEAR) + ((cl.get(Calendar.MONTH) < 9) ? "0" : "") + (cl.get(Calendar.MONTH) +1) + ((cl.get(Calendar.DATE) < 10) ? "0" : "") + cl.get(Calendar.DATE);
+		System.out.println((new Date()) +" PixelDataProcessorImpl.initVars: completed. collectonName=" + collectionName);
+	}
+	
+	
+	@Override
+	public void processData(String ip, String u, Map<String, Object> parameterMap, String country, String region) {
+		executor.submit(new Process(ip, u, parameterMap, country, region));
+	}
+	
+	private static String getStrValue(Object obj){
+		if(obj!=null){
+			if(obj instanceof Object[] && ((Object [])obj).length!=0){
+				return (String)((Object [])obj)[0];
+			}else{
+				return (String)obj;
+			}
+		}
+		return null;
+	}
+	
+	
+	class Process implements Runnable{
+		private String ip;
+		private String u;
+		private Map<String, Object> parameterMap;
+		private String country;
+		private String region;
+		
+		Process(String ip, String u, Map<String, Object> parameterMap, String country, String region) {
+			this.ip = ip;
+			this.u = u;
+			this.parameterMap = parameterMap;
+			this.country = country;
+			this.region = region;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				ScriptContext ctx = new SimpleScriptContext();
+		        Bindings bindings = ctx.getBindings(ScriptContext.ENGINE_SCOPE);
+				
+		        for(String key : parameterMap.keySet()) {
+					String val = getStrValue(parameterMap.get(key));
+					if(val != null) {
+						bindings.put(key, val);
+					}
+				}
+				
+		        BasicDBObject obj = new BasicDBObject();
+		        obj.put("u", u);
+		        obj.put("ip", ip);
+		        obj.put("_dn", getStrValue(parameterMap.get("_dn")));
+		        if(country != null) {
+		        	obj.put("CN", country);
+		        }
+		        if(region != null) {
+		        	obj.put("RN", region);
+		        }
+		        
+		        boolean attributeMatch = false;
+		        for(Attr attr : attributes) {
+					boolean attrPresent = false;
+					try {
+						attrPresent = (Boolean)engine.eval(attr.getExpr(), bindings);
+						
+						if(attrPresent) {
+							obj.append("A" + attr.getId(), 1);
+							attributeMatch = true;
+						}
+			        } catch (ScriptException e) {
+			        	if(getStrValue(parameterMap.get("_err")) != null) {
+			        		e.printStackTrace();
+			        	}
+			        }
+				}
+		        if(!attributeMatch) {
+		        	obj.append("_X_", 1);
+		        }
+		        DB db = mongo.getDb();
+		        db.getCollection(collectionName).insert(obj);
+		        
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	@Override
+	public ThreadPoolExecutor getExecutor() {
+		return this.executor;
+	}
+}

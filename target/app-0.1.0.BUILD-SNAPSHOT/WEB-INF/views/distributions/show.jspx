@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_dataom_app_domain_Distribution" object="${distribution}" path="/distributions" z="sdI4c5OL98Hf/8slqzABgpJ8FG4=">
+        <field:display field="name" id="s_com_dataom_app_domain_Distribution_name" object="${distribution}" z="cll2SSu2I9Dv4qjfD83MjlksYrE="/>
+        <field:display field="dtype" id="s_com_dataom_app_domain_Distribution_dtype" object="${distribution}" z="1h3R2mAFVM/o6iMOLNQDJLvi7WM="/>
+        <field:display field="description" id="s_com_dataom_app_domain_Distribution_description" object="${distribution}" z="LCpyYpVUHdxlyZ12x4VmhrenQWo="/>
+        <field:display field="syncCall" id="s_com_dataom_app_domain_Distribution_syncCall" object="${distribution}" z="VIjKXvTjMTKmMH/M8XpYqNJRcMs="/>
+        <field:display field="ftpAddress" id="s_com_dataom_app_domain_Distribution_ftpAddress" object="${distribution}" z="A/i3Ghp4TNhh2RXFB0lCqD1SQ/M="/>
+        <field:display field="ftpDir" id="s_com_dataom_app_domain_Distribution_ftpDir" object="${distribution}" z="+cH4tyhj9sLfsh3QMdYmaYki1lg="/>
+        <field:display field="ftpUser" id="s_com_dataom_app_domain_Distribution_ftpUser" object="${distribution}" z="JN7yJhroux+miHGJgybP/QFAae4="/>
+        <field:display field="ftpPass" id="s_com_dataom_app_domain_Distribution_ftpPass" object="${distribution}" z="pK+g5mTOHBuGCIeLvRYlo6lUFI4="/>
+        <field:display field="ftpIsSecure" id="s_com_dataom_app_domain_Distribution_ftpIsSecure" object="${distribution}" z="uJOWNP5yOfCPkyJvkk3mTHoWYoo="/>
+        <field:display field="disabled" id="s_com_dataom_app_domain_Distribution_disabled" object="${distribution}" z="T53mXA8IXaw2ZD7cu9jx0WOs5Iw="/>
+    </page:show>
+</div>

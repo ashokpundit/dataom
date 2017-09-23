@@ -1,0 +1,25 @@
+package com.dataom.app.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dataom.app.svc.PixelDataProcessorSvc;
+
+@RequestMapping("/reports")
+@Controller
+public class ReportsController {
+	@Autowired
+	private PixelDataProcessorSvc processorSvc;
+	
+	@RequestMapping("")
+	public String stats(Model uiModel) {
+	    uiModel.addAttribute("title", "My Report");
+	    
+	    return "reports/dash";
+	}
+		
+}
+
+

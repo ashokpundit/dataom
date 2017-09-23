@@ -1,0 +1,78 @@
+package com.dataom.app.svc;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MapReduceCommand;
+import com.mongodb.MongoException;
+
+@Service
+public class MapReduceJobsImpl implements MapReduceJobs {
+
+	@Autowired
+	private MongoTemplate mongo;
+	
+	@Override
+	public void dailyTotals() {
+		DB db = mongo.getDb();
+		DBCollection dbCol =  db.getCollection("raw" + Utils.getDateString(-1));
+		
+		try {
+			dbCol.mapReduce(getFile("mapreduce/dailytotals_map.js"), getFile("mapreduce/dailytotals_reduce.js"), "dailytotals" + Utils.getDateString(-1), MapReduceCommand.OutputType.REPLACE, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+
+	@Override
+	@Scheduled(cron= "0 0 1/24 * * *")
+	public void dailyAttributes() {
+		System.out.println(new Date() + " Starting dailyaggregate job." );
+		DB db = mongo.getDb();
+		DBCollection dbCol =  db.getCollection("raw" + Utils.getDateString(-1));
+		
+		try {
+			dbCol.mapReduce(getFile("mapreduce/aagregatedaily/map.js"), getFile("mapreduce/aagregatedaily/reduce.js"), "dailyattributes", MapReduceCommand.OutputType.MERGE, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(new Date() + " Finished dailyaggregate job." );
+	}
+
+	@Override
+	public void dailySizes() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private String getFile(String jsFile) throws IOException {
+		String xx = "";
+		InputStreamReader reader = new InputStreamReader(Thread.currentThread().getContextClassLoader().getSystemResourceAsStream(jsFile));
+		StringBuilder strBuilder = new StringBuilder();
+		
+		char[] chbuff = new char[128];
+		int l = reader.read(chbuff, 0, 128);
+		while(l > 0) {
+			strBuilder.append(chbuff, 0, l);
+			l = reader.read(chbuff, 0, 128);
+		}
+		
+		return strBuilder.toString();
+	}
+	
+	
+	public static void main(String[] args) throws Exception{
+		Object s = MapReduceJobsImpl.class.getClass().getResourceAsStream("/mapreduce/aggregatedaily/map.js");
+		System.out.println("S========" + s);
+	}
+
+}

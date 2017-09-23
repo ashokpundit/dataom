@@ -1,0 +1,13 @@
+<h1 id="h"></h1>
+<p>Active = ${active}<br/>
+<p>Taskcount = ${completed} <br/>
+<p>Largest = ${largest} <br/>
+<p>Pool = ${poolsize} <br/>
+<p>Queue Remaining = ${remainingCapacity} <br/>
+<p>Queue Size = ${queue} <br/>
+
+
+<script>
+document.getElementById("h").innerHTML = new Date();
+//window.setTimeout("location.reload()", 10000);
+</script>

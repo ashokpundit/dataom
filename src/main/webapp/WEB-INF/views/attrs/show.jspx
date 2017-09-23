@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_dataom_app_domain_Attr" object="${attr}" path="/attrs" z="dh4p+rsfI1+JrR0BpO38ysQx1EY=">
+        <field:display field="name" id="s_com_dataom_app_domain_Attr_name" object="${attr}" z="kAWSz8q8ULgPdpYIrpi/Ejqtlic="/>
+        <field:display field="description" id="s_com_dataom_app_domain_Attr_description" object="${attr}" z="V1o2g/jFBez2lWfYZ3BvLj35Sps="/>
+        <field:display field="dn" id="s_com_dataom_app_domain_Attr_dn" object="${attr}" z="ok/pLA0n0x9JONbfsq7BIYXaX5Y="/>
+        <field:display field="expr" id="s_com_dataom_app_domain_Attr_expr" object="${attr}" z="UOPl9cpIFvxxOGOWeRgkZYB1PJU="/>
+        <field:display field="disabled" id="s_com_dataom_app_domain_Attr_disabled" object="${attr}" z="InT/q066KUMYR5P3FHSIuUp7YBo="/>
+        <field:display field="params" id="s_com_dataom_app_domain_Attr_params" object="${attr}" z="HNiOSaIwnU3QI82/jxoliLFbmV0="/>
+        <field:display field="population60d" id="s_com_dataom_app_domain_Attr_population60d" object="${attr}" z="i+lT/e2GN/blWNI4iaBtSfEFmnY="/>
+        <field:display field="population30d" id="s_com_dataom_app_domain_Attr_population30d" object="${attr}" z="DMVUA9oUbIqCH4Y1aqmyUEIPbjw="/>
+        <field:display field="populationDaily" id="s_com_dataom_app_domain_Attr_populationDaily" object="${attr}" z="RXlSCwYfOuNOF64yHrTWbTeXZgc="/>
+    </page:show>
+</div>

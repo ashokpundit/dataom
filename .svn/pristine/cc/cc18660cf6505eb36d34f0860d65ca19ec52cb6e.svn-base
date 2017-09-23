@@ -1,0 +1,19 @@
+package com.dataom.app.svc;
+
+public interface MapReduceJobs {
+	public void dailyTotals();
+	
+	public void dailyAttributes();
+	
+	public void dailySizes();
+
+	void last7dayAggr();
+
+	void last30dayAggr();
+
+	void last14dayAggr();
+
+	void last60dayAggr();
+
+	void multiDayMapReduce(int days);
+}
